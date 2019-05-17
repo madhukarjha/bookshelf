@@ -1,4 +1,17 @@
 const api = "https://www.googleapis.com/books/v1/volumes?startIndex=0&maxResults=30&q=";
+const bookList = [];
+
+const registerSW = function () {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('./sw.js').then(function (registration) {
+                console.log('Service worker registration successfull with scope ', registration.scope);
+            }, function (error) {
+                console.log('Error in serviceWorker registration ', error);
+            });
+        });
+    };
+}
 
 function search() {
     fetch(api + document.getElementById('searchInput').value)
@@ -28,7 +41,7 @@ const parse = function (response) {
                 <div class="mdc-checkbox">
                     <input type="checkbox"
                             class="mdc-checkbox__native-control"
-                            id="demo-list-checkbox-item-${element.volumeInfo.title}" />
+                            id="list-checkbox-item-${element.volumeInfo.title}" onclick="selectedBook('${element.volumeInfo.title}')" />
                     <div class="mdc-checkbox__background">
                     <svg class="mdc-checkbox__checkmark"
                             viewBox="0 0 24 24">
@@ -41,7 +54,7 @@ const parse = function (response) {
                 </div>
                 </span>
                 <label class="mdc-list-item__text" for="demo-list-checkbox-item-1">
-                ${element.volumeInfo.title }${element.volumeInfo.subtitle ? +'&nbsp;:'+'&nbsp;'+ element.volumeInfo.subtitle: ''}</label>
+                ${element.volumeInfo.title}${element.volumeInfo.subtitle ? +'&nbsp;:' + '&nbsp;' + element.volumeInfo.subtitle : ''}</label>
             </li>`
     });
     bookinfo = lst + "</ul>";
@@ -51,8 +64,13 @@ const parse = function (response) {
 const display = function (display) {
     document.getElementById("searchResult").innerHTML = display;
 }
-const addtoshelf = function(){
-
+const selectedBook = function (bookName) {
+    bookList.push(bookName);
 }
+const addtoshelf = function () {
+    console.log(bookList);
+}
+
+registerSW();
 document.getElementById("addtoshelf").addEventListener("click", addtoshelf);
 document.getElementById("searchbtn").addEventListener("click", search);
