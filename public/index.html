@@ -18,7 +18,10 @@
     <title>BookShelf</title>
   </head>
   <body class="mdc-typography">
-    <h1>Search book</h1>
+    <h1>Search book</h1>    
+    <button class="mdc-button-raised" id="addtoshelf">
+      <span class="mdc-button__label">Add to shelf</span>
+    </button>
     <div class="cards">
       <div class="mdc-text-field max-width">
         <input
@@ -32,6 +35,9 @@
       <button class="mdc-button-raised" id="searchbtn">
         <span class="mdc-button__label">Search</span>
       </button>
+    </div>
+    <div id="searchResult">
+
     </div>
     <script src="../scripts/app.js"></script>
     <script src="../scripts/sw.js"></script>
